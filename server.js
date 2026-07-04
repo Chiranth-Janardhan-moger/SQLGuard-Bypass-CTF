@@ -166,7 +166,11 @@ app.post('/api/verify-flag', (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-  console.log('Test the application by visiting the above URL.');
-});
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+    console.log('Test the application by visiting the above URL.');
+  });
+}
+
+module.exports = app;
