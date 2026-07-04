@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQLGuardJS Defense Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="glass-panel">
+            <h1><span class="neon-text">SQLGuardJS</span> Defense Lab</h1>
+            <p>Live Request Monitoring & Mitigation Interface</p>
+        </header>
+
+        <div class="main-layout">
+            <!-- Left Column: Attack Vectors -->
+            <div class="left-panel">
+                <!-- Login Bypass Simulator -->
+                <section class="glass-panel card">
+                    <h2>Authentication Bypass Vector</h2>
+                    <p class="subtitle">Try injecting payload into login fields</p>
+                    
+                    <form id="login-form">
+                        <div class="input-group">
+                            <label for="username">Username / Injection</label>
+                            <input type="text" id="username" placeholder="admin' OR 1=1--" autocomplete="off">
+                        </div>
+                        <div class="input-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn primary-btn">Execute Login</button>
+                    </form>
+                    
+                    <div id="login-result" class="result-box"></div>
+                </section>
+
+                <!-- Search Injection Simulator -->
+                <section class="glass-panel card">
+                    <h2>Data Exfiltration Vector</h2>
+                    <p class="subtitle">Try extracting UNION data through search</p>
+                    
+                    <form id="search-form">
+                        <div class="input-group">
+                            <label for="search-query">Search Query</label>
+                            <input type="text" id="search-query" placeholder="a%' UNION SELECT 1, sqlite_version()--" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn secondary-btn">Execute Search</button>
+                    </form>
+                    
+                    <div id="search-result" class="result-box"></div>
+                </section>
+
+                <!-- Flag Submission Vector -->
+                <section class="glass-panel card">
+                    <h2>Submit Flag</h2>
+                    <p class="subtitle">Did you find the CTF flag?</p>
+                    
+                    <form id="flag-form">
+                        <div class="input-group">
+                            <label for="flag-input">Flag</label>
+                            <input type="text" id="flag-input" placeholder="CTF{...}" autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn primary-btn" style="background: linear-gradient(135deg, #2ed573, #218c74);">Verify Flag</button>
+                    </form>
+                    
+                    <div id="flag-result" class="result-box"></div>
+                </section>
+                
+                <div class="hints glass-panel">
+                    <h3>Payload Hints:</h3>
+                    <ul>
+                        <li><code>admin'/*</code></li>
+                        <li><code>1' UNION SELECT password FROM users--</code></li>
+                        <li><code>'; DROP TABLE users--</code></li>
+                        <li><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Column: Security Logs -->
+            <div class="right-panel">
+                <section class="glass-panel terminal-container">
+                    <div class="terminal-header">
+                        <div class="dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-title">SQLGuardJS Live Threat Monitor</span>
+                        <div class="pulse-indicator">
+                            <div class="pulse"></div>
+                            <span>Active</span>
+                        </div>
+                    </div>
+                    
+                    <div class="terminal-body" id="log-container">
+                        <div class="log-entry system">
+                            <span class="timestamp">[SYSTEM]</span> Monitor initialized. Awaiting inbound connections...
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem; padding-bottom: 2rem;">
+            <a href="instructions.html" class="btn primary-btn" target="_blank" style="text-decoration: none; display: inline-block;">How SQLGuardJS Protects The System</a>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

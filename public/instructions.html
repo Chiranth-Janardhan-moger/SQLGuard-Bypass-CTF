@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How SQLGuardJS Protects Your System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .flow-diagram {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .flow-diagram h3 {
+            margin-top: 0;
+            color: #ff4757;
+        }
+        .flow-diagram.secure h3 {
+            color: #2ed573;
+        }
+        .flow-step {
+            font-family: 'Fira Code', monospace;
+            background: #1e272e;
+            padding: 1rem;
+            border-radius: 4px;
+            color: #d2dae2;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #7bed9f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="glass-panel">
+            <h1><span class="neon-text">SQLGuardJS</span> Protection Flow</h1>
+            <p>How it defends against injection and XSS attempts</p>
+        </header>
+
+        <div class="glass-panel card" style="margin-top: 2rem;">
+            <h2>CTF Challenge: Bypass SQLGuardJS</h2>
+            
+            <div class="flow-container">
+                <div class="flow-diagram">
+                    <h3>Problem Statement</h3>
+                    <p style="color: #d2dae2; font-family: 'Inter', sans-serif; line-height: 1.6;">
+                        This web application is secured by <strong>SQLGuardJS</strong>, a request verification layer that intercepts SQL injection and XSS payloads. Your objective is to discover a bypass technique that circumvents the guard's detection mechanisms and successfully executes a malicious SQL query against the backend SQLite database.
+                    </p>
+                </div>
+
+                <div class="flow-diagram secure">
+                    <h3>The Goal</h3>
+                    <p style="color: #d2dae2; font-family: 'Inter', sans-serif; line-height: 1.6;">
+                        A secret flag is hidden within the <code>flags</code> table in the database. You can try to bypass the Authentication endpoint or extract data via the Search endpoint. 
+                        <br><br>
+                        If you successfully bypass the filter, your output will look something like this:
+                    </p>
+                    <div class="flow-step" style="margin-top: 1rem;">{
+  "success": true,
+  "results": [
+    { "role": "CTF{y0ur_h4ck3r_fl4g_h3r3}" }
+  ]
+}</div>
+                </div>
+            </div>
+
+            <a href="index.html" class="back-link">← Back to Defense Lab</a>
+        </div>
+    </div>
+</body>
+</html>
