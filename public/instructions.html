@@ -45,6 +45,56 @@
         .back-link:hover {
             text-decoration: underline;
         }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .flow-path {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .flow-node {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+        .flow-node.danger {
+            border-color: rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+        }
+        .flow-node.safe {
+            border-color: rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+            color: #6ee7b7;
+        }
+        .flow-node.shield {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.6);
+            color: #93c5fd;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+            font-size: 1.1rem;
+            padding: 1.25rem 1rem;
+        }
+        .flow-arrow {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.5rem;
+            line-height: 1;
+            margin: 0.25rem 0;
+        }
     </style>
 </head>
 <body>
@@ -78,6 +128,32 @@
     { "role": "CTF{y0ur_h4ck3r_fl4g_h3r3}" }
   ]
 }</div>
+                </div>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="flow-diagram">
+                    <h3>Without SQLGuardJS</h3>
+                    <div class="flow-path" style="margin-top: 1.5rem;">
+                        <div class="flow-node danger">Attacker</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-node">Express Route</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-node">Application Logic</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-node danger">Database Executed / Rendered</div>
+                    </div>
+                </div>
+
+                <div class="flow-diagram secure">
+                    <h3>With SQLGuardJS</h3>
+                    <div class="flow-path" style="margin-top: 1.5rem;">
+                        <div class="flow-node danger">Attacker</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-node shield">🛡️ SQLGuardJS Middleware</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-node safe">Blocked (403) or Passed to Route</div>
+                    </div>
                 </div>
             </div>
 
