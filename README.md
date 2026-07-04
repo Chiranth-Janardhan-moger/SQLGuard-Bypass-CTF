@@ -2,7 +2,7 @@
 
 > A vulnerable Node.js web application designed to test your SQL Injection (SQLi) skills against a custom WAF (`sqlguardjs`).
 
-[![Node.js CI](https://github.com/your-username/SQLGuard-Bypass-CTF/actions/workflows/node.js.yml/badge.svg)](https://github.com/your-username/SQLGuard-Bypass-CTF/actions)
+[![Node.js CI](https://github.com/Chiranth-Janardhan-moger/SQLGuard-Bypass-CTF/actions/workflows/node.js.yml/badge.svg)](https://github.com/Chiranth-Janardhan-moger/SQLGuard-Bypass-CTF/actions)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
