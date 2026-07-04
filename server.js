@@ -1,22 +1,20 @@
 const express = require('express');
 const { sqlguardjs } = require('sqlguardjs');
-const sqlite3 = require('sqlite3').verbose();
+const Database = require('better-sqlite3');
 const path = require('path');
 
 const app = express();
 const port = 4040;
 
 // Set up SQLite database
-const db = new sqlite3.Database(':memory:');
-db.serialize(() => {
-  db.run("CREATE TABLE users (id INT, username TEXT, password TEXT, role TEXT)");
-  db.run("INSERT INTO users VALUES (1, 'admin', 'supersecret', 'admin')");
-  db.run("INSERT INTO users VALUES (2, 'user', 'password123', 'user')");
-  
-  // CTF Flag Table
-  db.run("CREATE TABLE flags (id INT, flag_value TEXT)");
-  db.run("INSERT INTO flags VALUES (1, 'CTF{sqlguard_byp4ss_m4st3r_9921}')");
-});
+const db = new Database(':memory:');
+db.exec("CREATE TABLE users (id INT, username TEXT, password TEXT, role TEXT)");
+db.exec("INSERT INTO users VALUES (1, 'admin', 'supersecret', 'admin')");
+db.exec("INSERT INTO users VALUES (2, 'user', 'password123', 'user')");
+
+// CTF Flag Table
+db.exec("CREATE TABLE flags (id INT, flag_value TEXT)");
+db.exec("INSERT INTO flags VALUES (1, 'CTF{sqlguard_byp4ss_m4st3r_9921}')");
 
 // Real-time logs for frontend
 const logs = [];
@@ -101,18 +99,17 @@ app.post('/api/login', guard.route(), (req, res) => {
   // Vulnerable query: String concatenation
   const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
   
-  db.get(query, (err, row) => {
-    if (err) {
-      broadcastLog({ type: 'error', message: err.message, timestamp: new Date().toISOString() });
-      return res.status(500).json({ error: 'Database error' });
-    }
-    
+  try {
+    const row = db.prepare(query).get();
     if (row) {
       res.json({ success: true, user: row, message: 'Login successful' });
     } else {
       res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
-  });
+  } catch (err) {
+    broadcastLog({ type: 'error', message: err.message, timestamp: new Date().toISOString() });
+    return res.status(500).json({ error: 'Database error' });
+  }
 });
 
 // Vulnerable Search Endpoint (Protected by SQLGuardJS)
@@ -129,13 +126,13 @@ app.get('/api/search', guard.route(), (req, res) => {
   // Vulnerable query
   const query = `SELECT username, role FROM users WHERE username LIKE '%${q}%'`;
   
-  db.all(query, (err, rows) => {
-    if (err) {
-      broadcastLog({ type: 'error', message: err.message, timestamp: new Date().toISOString() });
-      return res.status(500).json({ error: 'Database error' });
-    }
+  try {
+    const rows = db.prepare(query).all();
     res.json({ success: true, results: rows });
-  });
+  } catch (err) {
+    broadcastLog({ type: 'error', message: err.message, timestamp: new Date().toISOString() });
+    return res.status(500).json({ error: 'Database error' });
+  }
 });
 
 // Verify Flag Endpoint
@@ -153,17 +150,16 @@ app.post('/api/verify-flag', (req, res) => {
     return res.status(400).json({ success: false, isTroll: true, message: "Don't be so clever?" });
   }
 
-  db.get("SELECT * FROM flags WHERE flag_value = ?", [flag], (err, row) => {
-    if (err) {
-      return res.status(500).json({ error: 'Database error' });
-    }
-    
+  try {
+    const row = db.prepare("SELECT * FROM flags WHERE flag_value = ?").get(flag);
     if (row) {
       res.json({ success: true, message: 'Successfully bypassed it! You are a master.' });
     } else {
       res.status(401).json({ success: false, message: 'Invalid flag. Keep trying!' });
     }
-  });
+  } catch (err) {
+    return res.status(500).json({ error: 'Database error' });
+  }
 });
 
 if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
