@@ -392,3 +392,36 @@ input:focus {
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255,255,255,0.2);
 }
+
+/* Mobile Responsiveness Enhancements */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    header {
+        padding: 1.5rem 1rem;
+    }
+    
+    header p {
+        font-size: 0.9rem;
+    }
+    
+    .card {
+        padding: 1rem;
+    }
+    
+    .terminal-body {
+        max-height: 350px;
+        padding: 0.75rem;
+    }
+    
+    .terminal-header {
+        padding: 0.5rem 0.75rem;
+    }
+}
